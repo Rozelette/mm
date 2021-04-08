@@ -32,9 +32,6 @@
 //#define LINK_IS_CHILD (gSaveContext.perm.linkAge != 0)
 #define LINK_IS_ADULT (gSaveContext.perm.linkAge == 0)
 
-#define SQ(x) ((x)*(x))
-#define DECR(x) ((x) == 0 ? 0 : ((x) -= 1))
-
 #define CHECK_BTN_ALL(state, combo) (~((state) | ~(combo)) == 0)
 #define CHECK_BTN_ANY(state, combo) (((state) & (combo)) != 0)
 

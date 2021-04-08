@@ -396,14 +396,6 @@ typedef struct {
 } SramContext; // size = 0x20
 
 typedef struct {
-    /* 0x00 */ UNK_TYPE4 unk0;
-    /* 0x04 */ UNK_TYPE4 unk4;
-    /* 0x08 */ UNK_TYPE4 unk8;
-    /* 0x0C */ f32 unkC;
-    /* 0x10 */ Color_RGBA8 unk10;
-} TargetContextEntry; // size = 0x14
-
-typedef struct {
     /* 0x0 */ u32 texture;
     /* 0x4 */ s16 unk4;
     /* 0x6 */ s16 unk6;
@@ -1445,8 +1437,6 @@ typedef enum {
     STACK_STATUS_OVERFLOW = 2
 } StackStatus;
 
-typedef struct TargetContext TargetContext;
-
 typedef struct ActorContext ActorContext;
 
 typedef struct s800B948C s800B948C;
@@ -1563,31 +1553,30 @@ struct FireObj {
     /* 0x78 */ FireObjLight light;
 }; // size = 0x8B
 
-struct TargetContext {
-    /* 0x00 */ Vec3f unk0;
-    /* 0x0C */ Vec3f unkC;
-    /* 0x18 */ f32 unk18;
-    /* 0x1C */ f32 unk1C;
-    /* 0x20 */ f32 unk20;
-    /* 0x24 */ f32 unk24;
-    /* 0x28 */ f32 unk28;
-    /* 0x2C */ f32 unk2C;
-    /* 0x30 */ f32 unk30;
-    /* 0x34 */ f32 unk34;
-    /* 0x38 */ Actor* unk38;
-    /* 0x3C */ Actor* unk3C;
+typedef struct {
+    /* 0x00 */ Vec3f pos;
+    /* 0x0C */ f32 unkC;
+    /* 0x10 */ Color_RGBA8 color;
+} TargetContextEntry; // size = 0x14
+
+typedef struct {
+    /* 0x00 */ Vec3f naviRefPos; // possibly wrong
+    /* 0x0C */ Vec3f targetCenterPos;
+    /* 0x18 */ Color_RGBAf naviInner;
+    /* 0x28 */ Color_RGBAf naviOuter;
+    /* 0x38 */ Actor* arrowPointedActor;
+    /* 0x3C */ Actor* targetedActor;
     /* 0x40 */ f32 unk40;
     /* 0x44 */ f32 unk44;
     /* 0x48 */ s16 unk48;
-    /* 0x4A */ u8 unk4A;
+    /* 0x4A */ u8 activeCategory;
     /* 0x4B */ u8 unk4B;
     /* 0x4C */ s8 unk4C;
-    /* 0x4D */ UNK_TYPE1 pad4D[0x3];
     /* 0x50 */ TargetContextEntry unk50[3];
     /* 0x8C */ Actor* unk8C;
     /* 0x90 */ Actor* unk90;
-    /* 0x94 */ UNK_TYPE1 pad94[0x4];
-}; // size = 0x98
+    /* 0x94 */ Actor* unk94;
+} TargetContext; // size = 0x98
 
 struct s800B948C {
     /* 0x00 */ GlobalContext* ctxt;
