@@ -657,7 +657,7 @@ SECTIONS
     _ovl_titleSegmentStart = SegmentStart;
     ovl_title : AT(RomLocation)
     {
-        build/asm/overlays/ovl_title_0x80800000.o(.text)
+        build/src/overlays/gamestates/ovl_title/ovl_title_0x80800000.o(.text)
         build/asm/overlays/ovl_title_data.o(.data)
         build/asm/overlays/ovl_title_rodata.o(.rodata)
     }
@@ -670,7 +670,7 @@ SECTIONS
     _ovl_selectSegmentStart = SegmentStart;
     ovl_select : AT(RomLocation)
     {
-        build/asm/overlays/ovl_select_0x80800910.o(.text)
+        build/src/overlays/gamestates/ovl_select/ovl_select_0x80800910.o(.text)
         build/asm/overlays/ovl_select_data.o(.data)
         build/asm/overlays/ovl_select_rodata.o(.rodata)
     }
@@ -683,7 +683,7 @@ SECTIONS
     _ovl_openingSegmentStart = SegmentStart;
     ovl_opening : AT(RomLocation)
     {
-        build/asm/overlays/ovl_opening_0x80803DF0.o(.text)
+        build/src/overlays/gamestates/ovl_opening/ovl_opening_0x80803DF0.o(.text)
         build/asm/overlays/ovl_opening_data.o(.data)
         build/asm/overlays/ovl_opening_rodata.o(.rodata)
     }
@@ -696,9 +696,9 @@ SECTIONS
     _ovl_file_chooseSegmentStart = SegmentStart;
     ovl_file_choose : AT(RomLocation)
     {
-        build/asm/overlays/ovl_file_choose_0x80804010.o(.text)
-        build/asm/overlays/ovl_file_choose_0x80807940.o(.text)
-        build/asm/overlays/ovl_file_choose_0x8080BC20.o(.text)
+        build/src/overlays/gamestates/ovl_file_choose/ovl_file_choose_0x80804010.o(.text)
+        build/src/overlays/gamestates/ovl_file_choose/ovl_file_choose_0x80807940.o(.text)
+        build/src/overlays/gamestates/ovl_file_choose/ovl_file_choose_0x8080BC20.o(.text)
         build/asm/overlays/ovl_file_choose_data.o(.data)
         build/asm/overlays/ovl_file_choose_rodata.o(.rodata)
     }
@@ -717,7 +717,7 @@ SECTIONS
     _ovl_daytelopSegmentStart = SegmentStart;
     ovl_daytelop : AT(RomLocation)
     {
-        build/asm/overlays/ovl_daytelop_0x80814EB0.o(.text)
+        build/src/overlays/gamestates/ovl_daytelop/ovl_daytelop_0x80814EB0.o(.text)
         build/asm/overlays/ovl_daytelop_data.o(.data)
         build/asm/overlays/ovl_daytelop_rodata.o(.rodata)
     }
@@ -730,10 +730,11 @@ SECTIONS
     _ovl_kaleido_scopeSegmentStart = SegmentStart;
     ovl_kaleido_scope : AT(RomLocation)
     {
-        build/asm/overlays/ovl_kaleido_scope_0x808160A0.o(.text)
-        build/asm/overlays/ovl_kaleido_scope_0x8081D240.o(.text)
-        build/asm/overlays/ovl_kaleido_scope_0x8081FF80.o(.text)
+        build/src/overlays/actors/ovl_kaleido_scope/ovl_kaleido_scope_0x808160A0.o(.text)
+        build/src/overlays/actors/ovl_kaleido_scope/ovl_kaleido_scope_0x8081D240.o(.text)
+        build/src/overlays/actors/ovl_kaleido_scope/ovl_kaleido_scope_0x8081FF80.o(.text)
         build/asm/overlays/ovl_kaleido_scope_data.o(.data)
+        build/asm/overlays/ovl_kaleido_scope_rodata.o(.rodata)
     }
     ovl_kaleido_scope.bss ALIGN(0x10):
     {
@@ -750,8 +751,10 @@ SECTIONS
     _ovl_Player_ActorSegmentStart = SegmentStart;
     ovl_Player_Actor : AT(RomLocation)
     {
-        build/asm/overlays/ovl_Player_Actor_0x8082DA90.o(.text)
+        build/src/overlays/actors/ovl_Player_Actor/z_player.o(.text)
         build/asm/overlays/ovl_Player_Actor_data.o(.data)
+        build/src/overlays/actors/ovl_Player_Actor/z_player.o(.rodata)
+        build/asm/overlays/ovl_Player_Actor_rodata.o(.rodata)
     }
     ovl_Player_Actor.bss ALIGN(0x10):
     {
