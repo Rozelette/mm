@@ -280,36 +280,40 @@ SECTIONS
     RomLocation += SegmentSize;
     _bootSegmentEnd = SegmentEnd;
 
-    boot_bss_start = .;
-    . += 0x1C60; /* boot_main */
-    . += 0x140; /* idle */
-    . += 0x770; /* z_std_dma */
-    . += 0x420; /* yaz0 */
-    . += 0x20; /* CIC6105 */
-    . += 0xE80; /* fault */
-    . += 0x40; /* fault_drawer */
-    . += 0x10; /* 0x80086760 */
-    . += 0x30; /* 0x80086DD0 */
-    . += 0x10; /* 0x80086FA0 */
-    . += 0x10; /* __osMalloc */
-    . += 0x40; /* sptask */
-    . += 0x100; /* 0x800896D0 */
-    . += 0x20; /* siacs */
-    . += 0x90; /* controller */
-    . += 0x10; /* 0x8008A170 */
-    . += 0x10; /* initialize */
-    . += 0x2A0; /* ??? */
-    . += 0x11D0; /* pimgr */
-    . += 0x20; /* piacs */
-    . += 0x100; /* devmgr */
-    . += 0x80; /* seteventmesg */
-    . += 0x40; /* timerintr */
-    . += 0x40; /* pfsisplug */
-    . += 0x80; /* cartrominit */
-    . += 0x1220; /* vimgr */
-    . += 0x6200; /* dmadata */
-    . += 0x10;
-    boot_bss_end = .;
+
+    boot.bss ALIGN(0x10):
+    {
+        boot_bss_start = .;
+        . += 0x1C60; /* boot_main */
+        . += 0x140; /* idle */
+        . += 0x770; /* z_std_dma */
+        . += 0x420; /* yaz0 */
+        . += 0x20; /* CIC6105 */
+        . += 0xE80; /* fault */
+        . += 0x40; /* fault_drawer */
+        . += 0x10; /* 0x80086760 */
+        . += 0x30; /* 0x80086DD0 */
+        . += 0x10; /* 0x80086FA0 */
+        . += 0x10; /* __osMalloc */
+        . += 0x40; /* sptask */
+        . += 0x100; /* 0x800896D0 */
+        . += 0x20; /* siacs */
+        . += 0x90; /* controller */
+        . += 0x10; /* 0x8008A170 */
+        . += 0x10; /* initialize */
+        . += 0x2A0; /* ??? */
+        . += 0x11D0; /* pimgr */
+        . += 0x20; /* piacs */
+        . += 0x100; /* devmgr */
+        . += 0x80; /* seteventmesg */
+        . += 0x40; /* timerintr */
+        . += 0x40; /* pfsisplug */
+        . += 0x80; /* cartrominit */
+        . += 0x1220; /* vimgr */
+        . += 0x6200; /* dmadata */
+        . += 0x10;
+        boot_bss_end = .;
+    }
 
     RomLocation = 0xA8BB20;
     . = 0x800A5AC0;
@@ -622,11 +626,15 @@ SECTIONS
     RomLocation += SegmentSize;
     _codeSegmentEnd = SegmentEnd;
 
-    code_bss_start = .;
-    . += 0x24F00;
-    code_bss_end = .;
 
-    buffers ALIGN(0x10):
+    code.bss ALIGN(0x10):
+    {
+        code_bss_start = .;
+        . += 0x24F00;
+        code_bss_end = .;
+    }
+
+    buffers.bss ALIGN(0x10):
     {
         build/src/buffers/gfxbuffers.o(.bss)
         build/src/buffers/heaps.o(.bss)
@@ -692,9 +700,13 @@ SECTIONS
         build/asm/overlays/ovl_file_choose_0x8080BC20.o(.text)
         build/asm/overlays/ovl_file_choose_data.o(.data)
         build/asm/overlays/ovl_file_choose_rodata.o(.rodata)
-        ovl_file_choose_bss_start = .;
     }
-    . += 0x30;
+    ovl_file_choose.bss ALIGN(0x10):
+    {
+        ovl_file_choose_bss_start = .;
+        . += 0x30;
+        ovl_file_choose_bss_end = .;
+    }
     SegmentEnd = .;
     SegmentSize = SegmentEnd - SegmentStart;
     RomLocation += SegmentSize;
@@ -721,9 +733,13 @@ SECTIONS
         build/asm/overlays/ovl_kaleido_scope_0x8081D240.o(.text)
         build/asm/overlays/ovl_kaleido_scope_0x8081FF80.o(.text)
         build/asm/overlays/ovl_kaleido_scope_data.o(.data)
-        ovl_kaleido_scope_bss_start = .;
     }
-    . += 0x40;
+    ovl_kaleido_scope.bss ALIGN(0x10):
+    {
+        ovl_kaleido_scope_bss_start = .;
+        . += 0x40;
+        ovl_kaleido_scope_bss_end = .;
+    }
     SegmentEnd = .;
     SegmentSize = SegmentEnd - SegmentStart;
     RomLocation += SegmentSize;
@@ -735,9 +751,13 @@ SECTIONS
     {
         build/asm/overlays/ovl_Player_Actor_0x8082DA90.o(.text)
         build/asm/overlays/ovl_Player_Actor_data.o(.data)
-        ovl_Player_Actor_bss_start = .;
     }
-    . += 0x80;
+    ovl_Player_Actor.bss ALIGN(0x10):
+    {
+        ovl_Player_Actor_bss_start = .;
+        . += 0x80;
+        ovl_Player_Actor_bss_end = .;
+    }
     SegmentEnd = .;
     SegmentSize = SegmentEnd - SegmentStart;
     RomLocation += SegmentSize;
@@ -807,9 +827,13 @@ SECTIONS
         build/asm/overlays/ovl_En_Door_data.o(.data)
         build/src/overlays/actors/ovl_En_Door/z_en_door.o(.rodata)
         build/asm/overlays/ovl_En_Door_rodata.o(.rodata)
-        ovl_En_Door_bss_start = .;
     }
-    . += 0x10;
+    ovl_En_Door.bss ALIGN(0x10):
+    {
+        ovl_En_Door_bss_start = .;
+        . += 0x10;
+        ovl_En_Door_bss_end = .;
+    }
     SegmentEnd = .;
     SegmentSize = SegmentEnd - SegmentStart;
     RomLocation += SegmentSize;
@@ -865,9 +889,13 @@ SECTIONS
         build/asm/overlays/ovl_En_Bom_data.o(.data)
         build/src/overlays/actors/ovl_En_Bom/z_en_bom.o(.rodata)
         build/asm/overlays/ovl_En_Bom_rodata.o(.rodata)
-        ovl_En_Bom_bss_start = .;
     }
-    . += 0x1C0;
+    ovl_En_Bom.bss ALIGN(0x10):
+    {
+        ovl_En_Bom_bss_start = .;
+        . += 0x1C0;
+        ovl_En_Bom_bss_end = .;
+    }
     SegmentEnd = .;
     SegmentSize = SegmentEnd - SegmentStart;
     RomLocation += SegmentSize;
@@ -1064,9 +1092,13 @@ SECTIONS
         build/asm/overlays/ovl_En_Viewer_data.o(.data)
         build/src/overlays/actors/ovl_En_Viewer/z_en_viewer.o(.rodata)
         build/asm/overlays/ovl_En_Viewer_rodata.o(.rodata)
-        ovl_En_Viewer_bss_start = .;
     }
-    . += 0x10;
+    ovl_En_Viewer.bss ALIGN(0x10):
+    {
+        ovl_En_Viewer_bss_start = .;
+        . += 0x10;
+        ovl_En_Viewer_bss_end = .;
+    }
     SegmentEnd = .;
     SegmentSize = SegmentEnd - SegmentStart;
     RomLocation += SegmentSize;
@@ -1305,9 +1337,13 @@ SECTIONS
         build/asm/overlays/ovl_Door_Warp1_data.o(.data)
         build/src/overlays/actors/ovl_Door_Warp1/z_door_warp1.o(.rodata)
         build/asm/overlays/ovl_Door_Warp1_rodata.o(.rodata)
-        ovl_Door_Warp1_bss_start = .;
     }
-    . += 0x10;
+    ovl_Door_Warp1.bss ALIGN(0x10):
+    {
+        ovl_Door_Warp1_bss_start = .;
+        . += 0x10;
+        ovl_Door_Warp1_bss_end = .;
+    }
     SegmentEnd = .;
     SegmentSize = SegmentEnd - SegmentStart;
     RomLocation += SegmentSize;
@@ -1321,9 +1357,13 @@ SECTIONS
         build/asm/overlays/ovl_Obj_Syokudai_data.o(.data)
         build/src/overlays/actors/ovl_Obj_Syokudai/z_obj_syokudai.o(.rodata)
         build/asm/overlays/ovl_Obj_Syokudai_rodata.o(.rodata)
-        ovl_Obj_Syokudai_bss_start = .;
     }
-    . += 0x10;
+    ovl_Obj_Syokudai.bss ALIGN(0x10):
+    {
+        ovl_Obj_Syokudai_bss_start = .;
+        . += 0x10;
+        ovl_Obj_Syokudai_bss_end = .;
+    }
     SegmentEnd = .;
     SegmentSize = SegmentEnd - SegmentStart;
     RomLocation += SegmentSize;
@@ -1422,9 +1462,13 @@ SECTIONS
         build/asm/overlays/ovl_En_Wood02_data.o(.data)
         build/src/overlays/actors/ovl_En_Wood02/z_en_wood02.o(.rodata)
         build/asm/overlays/ovl_En_Wood02_rodata.o(.rodata)
-        ovl_En_Wood02_bss_start = .;
     }
-    . += 0x10;
+    ovl_En_Wood02.bss ALIGN(0x10):
+    {
+        ovl_En_Wood02_bss_start = .;
+        . += 0x10;
+        ovl_En_Wood02_bss_end = .;
+    }
     SegmentEnd = .;
     SegmentSize = SegmentEnd - SegmentStart;
     RomLocation += SegmentSize;
@@ -1452,9 +1496,13 @@ SECTIONS
         build/asm/overlays/ovl_En_Minideath_data.o(.data)
         build/src/overlays/actors/ovl_En_Minideath/z_en_minideath.o(.rodata)
         build/asm/overlays/ovl_En_Minideath_rodata.o(.rodata)
-        ovl_En_Minideath_bss_start = .;
     }
-    . += 0x10;
+    ovl_En_Minideath.bss ALIGN(0x10):
+    {
+        ovl_En_Minideath_bss_start = .;
+        . += 0x10;
+        ovl_En_Minideath_bss_end = .;
+    }
     SegmentEnd = .;
     SegmentSize = SegmentEnd - SegmentStart;
     RomLocation += SegmentSize;
@@ -1579,9 +1627,13 @@ SECTIONS
         build/asm/overlays/ovl_Object_Kankyo_data.o(.data)
         build/src/overlays/actors/ovl_Object_Kankyo/z_object_kankyo.o(.rodata)
         build/asm/overlays/ovl_Object_Kankyo_rodata.o(.rodata)
-        ovl_Object_Kankyo_bss_start = .;
     }
-    . += 0x10;
+    ovl_Object_Kankyo.bss ALIGN(0x10):
+    {
+        ovl_Object_Kankyo_bss_start = .;
+        . += 0x10;
+        ovl_Object_Kankyo_bss_end = .;
+    }
     SegmentEnd = .;
     SegmentSize = SegmentEnd - SegmentStart;
     RomLocation += SegmentSize;
@@ -1819,9 +1871,13 @@ SECTIONS
         build/asm/overlays/ovl_En_Fishing_0x808FC6C0.o(.text)
         build/asm/overlays/ovl_En_Fishing_data.o(.data)
         build/asm/overlays/ovl_En_Fishing_rodata.o(.rodata)
-        ovl_En_Fishing_bss_start = .;
     }
-    . += 0x70E0;
+    ovl_En_Fishing.bss ALIGN(0x10):
+    {
+        ovl_En_Fishing_bss_start = .;
+        . += 0x70E0;
+        ovl_En_Fishing_bss_end = .;
+    }
     SegmentEnd = .;
     SegmentSize = SegmentEnd - SegmentStart;
     RomLocation += SegmentSize;
@@ -1933,9 +1989,13 @@ SECTIONS
         build/asm/overlays/ovl_Arrow_Fire_data.o(.data)
         build/src/overlays/actors/ovl_Arrow_Fire/z_arrow_fire.o(.rodata)
         build/asm/overlays/ovl_Arrow_Fire_rodata.o(.rodata)
-        ovl_Arrow_Fire_bss_start = .;
     }
-    . += 0x10;
+    ovl_Arrow_Fire.bss ALIGN(0x10):
+    {
+        ovl_Arrow_Fire_bss_start = .;
+        . += 0x10;
+        ovl_Arrow_Fire_bss_end = .;
+    }
     SegmentEnd = .;
     SegmentSize = SegmentEnd - SegmentStart;
     RomLocation += SegmentSize;
@@ -1950,9 +2010,13 @@ SECTIONS
         build/asm/overlays/ovl_Arrow_Ice_rodata.o(.rodata)
         build/src/overlays/actors/ovl_Arrow_Ice/z_arrow_ice.o(.rodata)
         build/asm/overlays/ovl_Arrow_Ice_late_rodata.o(.rodata)
-        ovl_Arrow_Ice_bss_start = .;
     }
-    . += 0x10;
+    ovl_Arrow_Ice.bss ALIGN(0x10):
+    {
+        ovl_Arrow_Ice_bss_start = .;
+        . += 0x10;
+        ovl_Arrow_Ice_bss_end = .;
+    }
     SegmentEnd = .;
     SegmentSize = SegmentEnd - SegmentStart;
     RomLocation += SegmentSize;
@@ -1967,9 +2031,13 @@ SECTIONS
         build/asm/overlays/ovl_Arrow_Light_rodata.o(.rodata)
         build/src/overlays/actors/ovl_Arrow_Light/z_arrow_light.o(.rodata)
         build/asm/overlays/ovl_Arrow_Light_late_rodata.o(.rodata)
-        ovl_Arrow_Light_bss_start = .;
     }
-    . += 0x10;
+    ovl_Arrow_Light.bss ALIGN(0x10):
+    {
+        ovl_Arrow_Light_bss_start = .;
+        . += 0x10;
+        ovl_Arrow_Light_bss_end = .;
+    }
     SegmentEnd = .;
     SegmentSize = SegmentEnd - SegmentStart;
     RomLocation += SegmentSize;
@@ -2125,9 +2193,13 @@ SECTIONS
         build/asm/overlays/ovl_En_Kusa_data.o(.data)
         build/src/overlays/actors/ovl_En_Kusa/z_en_kusa.o(.rodata)
         build/asm/overlays/ovl_En_Kusa_rodata.o(.rodata)
-        ovl_En_Kusa_bss_start = .;
     }
-    . += 0x220;
+    ovl_En_Kusa.bss ALIGN(0x10):
+    {
+        ovl_En_Kusa_bss_start = .;
+        . += 0x220;
+        ovl_En_Kusa_bss_end = .;
+    }
     SegmentEnd = .;
     SegmentSize = SegmentEnd - SegmentStart;
     RomLocation += SegmentSize;
@@ -2168,9 +2240,13 @@ SECTIONS
         build/asm/overlays/ovl_Obj_Switch_data.o(.data)
         build/src/overlays/actors/ovl_Obj_Switch/z_obj_switch.o(.rodata)
         build/asm/overlays/ovl_Obj_Switch_rodata.o(.rodata)
-        ovl_Obj_Switch_bss_start = .;
     }
-    . += 0x10;
+    ovl_Obj_Switch.bss ALIGN(0x10):
+    {
+        ovl_Obj_Switch_bss_start = .;
+        . += 0x10;
+        ovl_Obj_Switch_bss_end = .;
+    }
     SegmentEnd = .;
     SegmentSize = SegmentEnd - SegmentStart;
     RomLocation += SegmentSize;
@@ -2310,9 +2386,13 @@ SECTIONS
         build/asm/overlays/ovl_En_Sda_data.o(.data)
         build/src/overlays/actors/ovl_En_Sda/z_en_sda.o(.rodata)
         build/asm/overlays/ovl_En_Sda_rodata.o(.rodata)
-        ovl_En_Sda_bss_start = .;
     }
-    . += 0xC0;
+    ovl_En_Sda.bss ALIGN(0x10):
+    {
+        ovl_En_Sda_bss_start = .;
+        . += 0xC0;
+        ovl_En_Sda_bss_end = .;
+    }
     SegmentEnd = .;
     SegmentSize = SegmentEnd - SegmentStart;
     RomLocation += SegmentSize;
@@ -2632,9 +2712,13 @@ SECTIONS
         build/asm/overlays/ovl_Bg_F40_Swlift_data.o(.data)
         build/src/overlays/actors/ovl_Bg_F40_Swlift/z_bg_f40_swlift.o(.rodata)
         build/asm/overlays/ovl_Bg_F40_Swlift_rodata.o(.rodata)
-        ovl_Bg_F40_Swlift_bss_start = .;
     }
-    . += 0x10;
+    ovl_Bg_F40_Swlift.bss ALIGN(0x10):
+    {
+        ovl_Bg_F40_Swlift_bss_start = .;
+        . += 0x10;
+        ovl_Bg_F40_Swlift_bss_end = .;
+    }
     SegmentEnd = .;
     SegmentSize = SegmentEnd - SegmentStart;
     RomLocation += SegmentSize;
@@ -2747,9 +2831,13 @@ SECTIONS
         build/asm/overlays/ovl_Oceff_Wipe_data.o(.data)
         build/src/overlays/actors/ovl_Oceff_Wipe/z_oceff_wipe.o(.rodata)
         build/asm/overlays/ovl_Oceff_Wipe_rodata.o(.rodata)
-        ovl_Oceff_Wipe_bss_start = .;
     }
-    . += 0x10;
+    ovl_Oceff_Wipe.bss ALIGN(0x10):
+    {
+        ovl_Oceff_Wipe_bss_start = .;
+        . += 0x10;
+        ovl_Oceff_Wipe_bss_end = .;
+    }
     SegmentEnd = .;
     SegmentSize = SegmentEnd - SegmentStart;
     RomLocation += SegmentSize;
@@ -3167,9 +3255,13 @@ SECTIONS
         build/asm/overlays/ovl_Oceff_Wipe2_data.o(.data)
         build/src/overlays/actors/ovl_Oceff_Wipe2/z_oceff_wipe2.o(.rodata)
         build/asm/overlays/ovl_Oceff_Wipe2_rodata.o(.rodata)
-        ovl_Oceff_Wipe2_bss_start = .;
     }
-    . += 0x10;
+    ovl_Oceff_Wipe2.bss ALIGN(0x10):
+    {
+        ovl_Oceff_Wipe2_bss_start = .;
+        . += 0x10;
+        ovl_Oceff_Wipe2_bss_end = .;
+    }
     SegmentEnd = .;
     SegmentSize = SegmentEnd - SegmentStart;
     RomLocation += SegmentSize;
@@ -3183,9 +3275,13 @@ SECTIONS
         build/asm/overlays/ovl_Oceff_Wipe3_data.o(.data)
         build/src/overlays/actors/ovl_Oceff_Wipe3/z_oceff_wipe3.o(.rodata)
         build/asm/overlays/ovl_Oceff_Wipe3_rodata.o(.rodata)
-        ovl_Oceff_Wipe3_bss_start = .;
     }
-    . += 0x10;
+    ovl_Oceff_Wipe3.bss ALIGN(0x10):
+    {
+        ovl_Oceff_Wipe3_bss_start = .;
+        . += 0x10;
+        ovl_Oceff_Wipe3_bss_end = .;
+    }
     SegmentEnd = .;
     SegmentSize = SegmentEnd - SegmentStart;
     RomLocation += SegmentSize;
@@ -3380,9 +3476,13 @@ SECTIONS
         build/asm/overlays/ovl_Oceff_Wipe4_data.o(.data)
         build/src/overlays/actors/ovl_Oceff_Wipe4/z_oceff_wipe4.o(.rodata)
         build/asm/overlays/ovl_Oceff_Wipe4_rodata.o(.rodata)
-        ovl_Oceff_Wipe4_bss_start = .;
     }
-    . += 0x10;
+    ovl_Oceff_Wipe4.bss ALIGN(0x10):
+    {
+        ovl_Oceff_Wipe4_bss_start = .;
+        . += 0x10;
+        ovl_Oceff_Wipe4_bss_end = .;
+    }
     SegmentEnd = .;
     SegmentSize = SegmentEnd - SegmentStart;
     RomLocation += SegmentSize;
@@ -3576,9 +3676,13 @@ SECTIONS
         build/asm/overlays/ovl_Obj_Grass_data.o(.data)
         build/src/overlays/actors/ovl_Obj_Grass/z_obj_grass.o(.rodata)
         build/asm/overlays/ovl_Obj_Grass_rodata.o(.rodata)
-        ovl_Obj_Grass_bss_start = .;
     }
-    . += 0xC0;
+    ovl_Obj_Grass.bss ALIGN(0x10):
+    {
+        ovl_Obj_Grass_bss_start = .;
+        . += 0xC0;
+        ovl_Obj_Grass_bss_end = .;
+    }
     SegmentEnd = .;
     SegmentSize = SegmentEnd - SegmentStart;
     RomLocation += SegmentSize;
@@ -3690,9 +3794,13 @@ SECTIONS
         build/asm/overlays/ovl_En_Knight_data.o(.data)
         build/src/overlays/actors/ovl_En_Knight/z_en_knight.o(.rodata)
         build/asm/overlays/ovl_En_Knight_rodata.o(.rodata)
-        ovl_En_Knight_bss_start = .;
     }
-    . += 0x1790;
+    ovl_En_Knight.bss ALIGN(0x10):
+    {
+        ovl_En_Knight_bss_start = .;
+        . += 0x1790;
+        ovl_En_Knight_bss_end = .;
+    }
     SegmentEnd = .;
     SegmentSize = SegmentEnd - SegmentStart;
     RomLocation += SegmentSize;
@@ -3933,9 +4041,13 @@ SECTIONS
         build/asm/overlays/ovl_Boss_01_data.o(.data)
         build/src/overlays/actors/ovl_Boss_01/z_boss_01.o(.rodata)
         build/asm/overlays/ovl_Boss_01_rodata.o(.rodata)
-        ovl_Boss_01_bss_start = .;
     }
-    . += 0x17C0;
+    ovl_Boss_01.bss ALIGN(0x10):
+    {
+        ovl_Boss_01_bss_start = .;
+        . += 0x17C0;
+        ovl_Boss_01_bss_end = .;
+    }
     SegmentEnd = .;
     SegmentSize = SegmentEnd - SegmentStart;
     RomLocation += SegmentSize;
@@ -3949,9 +4061,13 @@ SECTIONS
         build/asm/overlays/ovl_Boss_02_data.o(.data)
         build/src/overlays/actors/ovl_Boss_02/z_boss_02.o(.rodata)
         build/asm/overlays/ovl_Boss_02_rodata.o(.rodata)
-        ovl_Boss_02_bss_start = .;
     }
-    . += 0x2340;
+    ovl_Boss_02.bss ALIGN(0x10):
+    {
+        ovl_Boss_02_bss_start = .;
+        . += 0x2340;
+        ovl_Boss_02_bss_end = .;
+    }
     SegmentEnd = .;
     SegmentSize = SegmentEnd - SegmentStart;
     RomLocation += SegmentSize;
@@ -3965,9 +4081,13 @@ SECTIONS
         build/asm/overlays/ovl_Boss_03_data.o(.data)
         build/src/overlays/actors/ovl_Boss_03/z_boss_03.o(.rodata)
         build/asm/overlays/ovl_Boss_03_rodata.o(.rodata)
-        ovl_Boss_03_bss_start = .;
     }
-    . += 0x2800;
+    ovl_Boss_03.bss ALIGN(0x10):
+    {
+        ovl_Boss_03_bss_start = .;
+        . += 0x2800;
+        ovl_Boss_03_bss_end = .;
+    }
     SegmentEnd = .;
     SegmentSize = SegmentEnd - SegmentStart;
     RomLocation += SegmentSize;
@@ -3981,9 +4101,13 @@ SECTIONS
         build/asm/overlays/ovl_Boss_04_data.o(.data)
         build/src/overlays/actors/ovl_Boss_04/z_boss_04.o(.rodata)
         build/asm/overlays/ovl_Boss_04_rodata.o(.rodata)
-        ovl_Boss_04_bss_start = .;
     }
-    . += 0x10;
+    ovl_Boss_04.bss ALIGN(0x10):
+    {
+        ovl_Boss_04_bss_start = .;
+        . += 0x10;
+        ovl_Boss_04_bss_end = .;
+    }
     SegmentEnd = .;
     SegmentSize = SegmentEnd - SegmentStart;
     RomLocation += SegmentSize;
@@ -3997,9 +4121,13 @@ SECTIONS
         build/asm/overlays/ovl_Boss_05_data.o(.data)
         build/src/overlays/actors/ovl_Boss_05/z_boss_05.o(.rodata)
         build/asm/overlays/ovl_Boss_05_rodata.o(.rodata)
-        ovl_Boss_05_bss_start = .;
     }
-    . += 0x10;
+    ovl_Boss_05.bss ALIGN(0x10):
+    {
+        ovl_Boss_05_bss_start = .;
+        . += 0x10;
+        ovl_Boss_05_bss_end = .;
+    }
     SegmentEnd = .;
     SegmentSize = SegmentEnd - SegmentStart;
     RomLocation += SegmentSize;
@@ -4013,9 +4141,13 @@ SECTIONS
         build/asm/overlays/ovl_Boss_06_data.o(.data)
         build/src/overlays/actors/ovl_Boss_06/z_boss_06.o(.rodata)
         build/asm/overlays/ovl_Boss_06_rodata.o(.rodata)
-        ovl_Boss_06_bss_start = .;
     }
-    . += 0x610;
+    ovl_Boss_06.bss ALIGN(0x10):
+    {
+        ovl_Boss_06_bss_start = .;
+        . += 0x610;
+        ovl_Boss_06_bss_end = .;
+    }
     SegmentEnd = .;
     SegmentSize = SegmentEnd - SegmentStart;
     RomLocation += SegmentSize;
@@ -4029,9 +4161,13 @@ SECTIONS
         build/asm/overlays/ovl_Boss_07_data.o(.data)
         build/src/overlays/actors/ovl_Boss_07/z_boss_07.o(.rodata)
         build/asm/overlays/ovl_Boss_07_rodata.o(.rodata)
-        ovl_Boss_07_bss_start = .;
     }
-    . += 0xE60;
+    ovl_Boss_07.bss ALIGN(0x10):
+    {
+        ovl_Boss_07_bss_start = .;
+        . += 0xE60;
+        ovl_Boss_07_bss_end = .;
+    }
     SegmentEnd = .;
     SegmentSize = SegmentEnd - SegmentStart;
     RomLocation += SegmentSize;
@@ -4159,9 +4295,13 @@ SECTIONS
         build/asm/overlays/ovl_Obj_Flowerpot_data.o(.data)
         build/src/overlays/actors/ovl_Obj_Flowerpot/z_obj_flowerpot.o(.rodata)
         build/asm/overlays/ovl_Obj_Flowerpot_rodata.o(.rodata)
-        ovl_Obj_Flowerpot_bss_start = .;
     }
-    . += 0x220;
+    ovl_Obj_Flowerpot.bss ALIGN(0x10):
+    {
+        ovl_Obj_Flowerpot_bss_start = .;
+        . += 0x220;
+        ovl_Obj_Flowerpot_bss_end = .;
+    }
     SegmentEnd = .;
     SegmentSize = SegmentEnd - SegmentStart;
     RomLocation += SegmentSize;
@@ -4271,9 +4411,13 @@ SECTIONS
         build/asm/overlays/ovl_Bg_Dblue_Movebg_data.o(.data)
         build/src/overlays/actors/ovl_Bg_Dblue_Movebg/z_bg_dblue_movebg.o(.rodata)
         build/asm/overlays/ovl_Bg_Dblue_Movebg_rodata.o(.rodata)
-        ovl_Bg_Dblue_Movebg_bss_start = .;
     }
-    . += 0x10;
+    ovl_Bg_Dblue_Movebg.bss ALIGN(0x10):
+    {
+        ovl_Bg_Dblue_Movebg_bss_start = .;
+        . += 0x10;
+        ovl_Bg_Dblue_Movebg_bss_end = .;
+    }
     SegmentEnd = .;
     SegmentSize = SegmentEnd - SegmentStart;
     RomLocation += SegmentSize;
@@ -4357,9 +4501,13 @@ SECTIONS
         build/src/overlays/actors/ovl_En_Slime/z_en_slime.o(.text)
         build/asm/overlays/ovl_En_Slime_data.o(.data)
         build/asm/overlays/ovl_En_Slime_rodata.o(.rodata)
-        ovl_En_Slime_bss_start = .;
     }
-    . += 0x10;
+    ovl_En_Slime.bss ALIGN(0x10):
+    {
+        ovl_En_Slime_bss_start = .;
+        . += 0x10;
+        ovl_En_Slime_bss_end = .;
+    }
     SegmentEnd = .;
     SegmentSize = SegmentEnd - SegmentStart;
     RomLocation += SegmentSize;
@@ -4568,9 +4716,13 @@ SECTIONS
         build/asm/overlays/ovl_En_Test3_data.o(.data)
         build/src/overlays/actors/ovl_En_Test3/z_en_test3.o(.rodata)
         build/asm/overlays/ovl_En_Test3_rodata.o(.rodata)
-        ovl_En_Test3_bss_start = .;
     }
-    . += 0x50;
+    ovl_En_Test3.bss ALIGN(0x10):
+    {
+        ovl_En_Test3_bss_start = .;
+        . += 0x50;
+        ovl_En_Test3_bss_end = .;
+    }
     SegmentEnd = .;
     SegmentSize = SegmentEnd - SegmentStart;
     RomLocation += SegmentSize;
@@ -4582,9 +4734,13 @@ SECTIONS
     {
         build/src/overlays/actors/ovl_En_Test4/z_en_test4.o(.text)
         build/asm/overlays/ovl_En_Test4_data.o(.data)
-        ovl_En_Test4_bss_start = .;
     }
-    . += 0x10;
+    ovl_En_Test4.bss ALIGN(0x10):
+    {
+        ovl_En_Test4_bss_start = .;
+        . += 0x10;
+        ovl_En_Test4_bss_end = .;
+    }
     SegmentEnd = .;
     SegmentSize = SegmentEnd - SegmentStart;
     RomLocation += SegmentSize;
@@ -4598,9 +4754,13 @@ SECTIONS
         build/asm/overlays/ovl_En_Bat_data.o(.data)
         build/src/overlays/actors/ovl_En_Bat/z_en_bat.o(.rodata)
         build/asm/overlays/ovl_En_Bat_rodata.o(.rodata)
-        ovl_En_Bat_bss_start = .;
     }
-    . += 0x10;
+    ovl_En_Bat.bss ALIGN(0x10):
+    {
+        ovl_En_Bat_bss_start = .;
+        . += 0x10;
+        ovl_En_Bat_bss_end = .;
+    }
     SegmentEnd = .;
     SegmentSize = SegmentEnd - SegmentStart;
     RomLocation += SegmentSize;
@@ -4881,9 +5041,13 @@ SECTIONS
         build/asm/overlays/ovl_En_Kusa2_data.o(.data)
         build/src/overlays/actors/ovl_En_Kusa2/z_en_kusa2.o(.rodata)
         build/asm/overlays/ovl_En_Kusa2_rodata.o(.rodata)
-        ovl_En_Kusa2_bss_start = .;
     }
-    . += 0x1960;
+    ovl_En_Kusa2.bss ALIGN(0x10):
+    {
+        ovl_En_Kusa2_bss_start = .;
+        . += 0x1960;
+        ovl_En_Kusa2_bss_end = .;
+    }
     SegmentEnd = .;
     SegmentSize = SegmentEnd - SegmentStart;
     RomLocation += SegmentSize;
@@ -5010,9 +5174,13 @@ SECTIONS
         build/asm/overlays/ovl_En_Fall_data.o(.data)
         build/src/overlays/actors/ovl_En_Fall/z_en_fall.o(.rodata)
         build/asm/overlays/ovl_En_Fall_rodata.o(.rodata)
-        ovl_En_Fall_bss_start = .;
     }
-    . += 0x710;
+    ovl_En_Fall.bss ALIGN(0x10):
+    {
+        ovl_En_Fall_bss_start = .;
+        . += 0x710;
+        ovl_En_Fall_bss_end = .;
+    }
     SegmentEnd = .;
     SegmentSize = SegmentEnd - SegmentStart;
     RomLocation += SegmentSize;
@@ -5040,9 +5208,13 @@ SECTIONS
         build/asm/overlays/ovl_Bg_Crace_Movebg_data.o(.data)
         build/src/overlays/actors/ovl_Bg_Crace_Movebg/z_bg_crace_movebg.o(.rodata)
         build/asm/overlays/ovl_Bg_Crace_Movebg_rodata.o(.rodata)
-        ovl_Bg_Crace_Movebg_bss_start = .;
     }
-    . += 0x20;
+    ovl_Bg_Crace_Movebg.bss ALIGN(0x10):
+    {
+        ovl_Bg_Crace_Movebg_bss_start = .;
+        . += 0x20;
+        ovl_Bg_Crace_Movebg_bss_end = .;
+    }
     SegmentEnd = .;
     SegmentSize = SegmentEnd - SegmentStart;
     RomLocation += SegmentSize;
@@ -5140,9 +5312,13 @@ SECTIONS
         build/asm/overlays/ovl_Obj_Mine_data.o(.data)
         build/src/overlays/actors/ovl_Obj_Mine/z_obj_mine.o(.rodata)
         build/asm/overlays/ovl_Obj_Mine_rodata.o(.rodata)
-        ovl_Obj_Mine_bss_start = .;
     }
-    . += 0x300;
+    ovl_Obj_Mine.bss ALIGN(0x10):
+    {
+        ovl_Obj_Mine_bss_start = .;
+        . += 0x300;
+        ovl_Obj_Mine_bss_end = .;
+    }
     SegmentEnd = .;
     SegmentSize = SegmentEnd - SegmentStart;
     RomLocation += SegmentSize;
@@ -5213,9 +5389,13 @@ SECTIONS
         build/asm/overlays/ovl_En_Test6_data.o(.data)
         build/src/overlays/actors/ovl_En_Test6/z_en_test6.o(.rodata)
         build/asm/overlays/ovl_En_Test6_rodata.o(.rodata)
-        ovl_En_Test6_bss_start = .;
     }
-    . += 0x120;
+    ovl_En_Test6.bss ALIGN(0x10):
+    {
+        ovl_En_Test6_bss_start = .;
+        . += 0x120;
+        ovl_En_Test6_bss_end = .;
+    }
     SegmentEnd = .;
     SegmentSize = SegmentEnd - SegmentStart;
     RomLocation += SegmentSize;
@@ -5229,9 +5409,13 @@ SECTIONS
         build/asm/overlays/ovl_En_Az_data.o(.data)
         build/src/overlays/actors/ovl_En_Az/z_en_az.o(.rodata)
         build/asm/overlays/ovl_En_Az_rodata.o(.rodata)
-        ovl_En_Az_bss_start = .;
     }
-    . += 0x20;
+    ovl_En_Az.bss ALIGN(0x10):
+    {
+        ovl_En_Az_bss_start = .;
+        . += 0x20;
+        ovl_En_Az_bss_end = .;
+    }
     SegmentEnd = .;
     SegmentSize = SegmentEnd - SegmentStart;
     RomLocation += SegmentSize;
@@ -5259,9 +5443,13 @@ SECTIONS
         build/asm/overlays/ovl_Bg_Hakugin_Post_data.o(.data)
         build/src/overlays/actors/ovl_Bg_Hakugin_Post/z_bg_hakugin_post.o(.rodata)
         build/asm/overlays/ovl_Bg_Hakugin_Post_rodata.o(.rodata)
-        ovl_Bg_Hakugin_Post_bss_start = .;
     }
-    . += 0x1B90;
+    ovl_Bg_Hakugin_Post.bss ALIGN(0x10):
+    {
+        ovl_Bg_Hakugin_Post_bss_start = .;
+        . += 0x1B90;
+        ovl_Bg_Hakugin_Post_bss_end = .;
+    }
     SegmentEnd = .;
     SegmentSize = SegmentEnd - SegmentStart;
     RomLocation += SegmentSize;
@@ -5317,9 +5505,13 @@ SECTIONS
         build/asm/overlays/ovl_Dm_Char01_data.o(.data)
         build/src/overlays/actors/ovl_Dm_Char01/z_dm_char01.o(.rodata)
         build/asm/overlays/ovl_Dm_Char01_rodata.o(.rodata)
-        ovl_Dm_Char01_bss_start = .;
     }
-    . += 0x10;
+    ovl_Dm_Char01.bss ALIGN(0x10):
+    {
+        ovl_Dm_Char01_bss_start = .;
+        . += 0x10;
+        ovl_Dm_Char01_bss_end = .;
+    }
     SegmentEnd = .;
     SegmentSize = SegmentEnd - SegmentStart;
     RomLocation += SegmentSize;
@@ -5557,9 +5749,13 @@ SECTIONS
         build/asm/overlays/ovl_En_Twig_data.o(.data)
         build/src/overlays/actors/ovl_En_Twig/z_en_twig.o(.rodata)
         build/asm/overlays/ovl_En_Twig_rodata.o(.rodata)
-        ovl_En_Twig_bss_start = .;
     }
-    . += 0x40;
+    ovl_En_Twig.bss ALIGN(0x10):
+    {
+        ovl_En_Twig_bss_start = .;
+        . += 0x40;
+        ovl_En_Twig_bss_end = .;
+    }
     SegmentEnd = .;
     SegmentSize = SegmentEnd - SegmentStart;
     RomLocation += SegmentSize;
@@ -5615,9 +5811,13 @@ SECTIONS
         build/asm/overlays/ovl_Bg_Icefloe_data.o(.data)
         build/src/overlays/actors/ovl_Bg_Icefloe/z_bg_icefloe.o(.rodata)
         build/asm/overlays/ovl_Bg_Icefloe_rodata.o(.rodata)
-        ovl_Bg_Icefloe_bss_start = .;
     }
-    . += 0x10;
+    ovl_Bg_Icefloe.bss ALIGN(0x10):
+    {
+        ovl_Bg_Icefloe_bss_start = .;
+        . += 0x10;
+        ovl_Bg_Icefloe_bss_end = .;
+    }
     SegmentEnd = .;
     SegmentSize = SegmentEnd - SegmentStart;
     RomLocation += SegmentSize;
@@ -5928,9 +6128,13 @@ SECTIONS
         build/asm/overlays/ovl_Obj_Takaraya_Wall_data.o(.data)
         build/src/overlays/actors/ovl_Obj_Takaraya_Wall/z_obj_takaraya_wall.o(.rodata)
         build/asm/overlays/ovl_Obj_Takaraya_Wall_rodata.o(.rodata)
-        ovl_Obj_Takaraya_Wall_bss_start = .;
     }
-    . += 0x6A0;
+    ovl_Obj_Takaraya_Wall.bss ALIGN(0x10):
+    {
+        ovl_Obj_Takaraya_Wall_bss_start = .;
+        . += 0x6A0;
+        ovl_Obj_Takaraya_Wall_bss_end = .;
+    }
     SegmentEnd = .;
     SegmentSize = SegmentEnd - SegmentStart;
     RomLocation += SegmentSize;
@@ -6112,9 +6316,13 @@ SECTIONS
         build/asm/overlays/ovl_En_Tk_data.o(.data)
         build/src/overlays/actors/ovl_En_Tk/z_en_tk.o(.rodata)
         build/asm/overlays/ovl_En_Tk_rodata.o(.rodata)
-        ovl_En_Tk_bss_start = .;
     }
-    . += 0x10;
+    ovl_En_Tk.bss ALIGN(0x10):
+    {
+        ovl_En_Tk_bss_start = .;
+        . += 0x10;
+        ovl_En_Tk_bss_end = .;
+    }
     SegmentEnd = .;
     SegmentSize = SegmentEnd - SegmentStart;
     RomLocation += SegmentSize;
@@ -6157,9 +6365,13 @@ SECTIONS
         build/asm/overlays/ovl_En_Test7_data.o(.data)
         build/src/overlays/actors/ovl_En_Test7/z_en_test7.o(.rodata)
         build/asm/overlays/ovl_En_Test7_rodata.o(.rodata)
-        ovl_En_Test7_bss_start = .;
     }
-    . += 0x60;
+    ovl_En_Test7.bss ALIGN(0x10):
+    {
+        ovl_En_Test7_bss_start = .;
+        . += 0x60;
+        ovl_En_Test7_bss_end = .;
+    }
     SegmentEnd = .;
     SegmentSize = SegmentEnd - SegmentStart;
     RomLocation += SegmentSize;
@@ -6467,9 +6679,13 @@ SECTIONS
         build/asm/overlays/ovl_Bg_Hakugin_Switch_data.o(.data)
         build/src/overlays/actors/ovl_Bg_Hakugin_Switch/z_bg_hakugin_switch.o(.rodata)
         build/asm/overlays/ovl_Bg_Hakugin_Switch_rodata.o(.rodata)
-        ovl_Bg_Hakugin_Switch_bss_start = .;
     }
-    . += 0x10;
+    ovl_Bg_Hakugin_Switch.bss ALIGN(0x10):
+    {
+        ovl_Bg_Hakugin_Switch_bss_start = .;
+        . += 0x10;
+        ovl_Bg_Hakugin_Switch_bss_end = .;
+    }
     SegmentEnd = .;
     SegmentSize = SegmentEnd - SegmentStart;
     RomLocation += SegmentSize;
@@ -6848,9 +7064,13 @@ SECTIONS
         build/asm/overlays/ovl_En_Invadepoh_data.o(.data)
         build/src/overlays/actors/ovl_En_Invadepoh/z_en_invadepoh.o(.rodata)
         build/asm/overlays/ovl_En_Invadepoh_rodata.o(.rodata)
-        ovl_En_Invadepoh_bss_start = .;
     }
-    . += 0x170;
+    ovl_En_Invadepoh.bss ALIGN(0x10):
+    {
+        ovl_En_Invadepoh_bss_start = .;
+        . += 0x170;
+        ovl_En_Invadepoh_bss_end = .;
+    }
     SegmentEnd = .;
     SegmentSize = SegmentEnd - SegmentStart;
     RomLocation += SegmentSize;
@@ -6906,9 +7126,13 @@ SECTIONS
         build/asm/overlays/ovl_En_Ot_data.o(.data)
         build/src/overlays/actors/ovl_En_Ot/z_en_ot.o(.rodata)
         build/asm/overlays/ovl_En_Ot_rodata.o(.rodata)
-        ovl_En_Ot_bss_start = .;
     }
-    . += 0x10;
+    ovl_En_Ot.bss ALIGN(0x10):
+    {
+        ovl_En_Ot_bss_start = .;
+        . += 0x10;
+        ovl_En_Ot_bss_end = .;
+    }
     SegmentEnd = .;
     SegmentSize = SegmentEnd - SegmentStart;
     RomLocation += SegmentSize;
@@ -7217,9 +7441,13 @@ SECTIONS
         build/asm/overlays/ovl_Bg_Dblue_Balance_data.o(.data)
         build/src/overlays/actors/ovl_Bg_Dblue_Balance/z_bg_dblue_balance.o(.rodata)
         build/asm/overlays/ovl_Bg_Dblue_Balance_rodata.o(.rodata)
-        ovl_Bg_Dblue_Balance_bss_start = .;
     }
-    . += 0x10;
+    ovl_Bg_Dblue_Balance.bss ALIGN(0x10):
+    {
+        ovl_Bg_Dblue_Balance_bss_start = .;
+        . += 0x10;
+        ovl_Bg_Dblue_Balance_bss_end = .;
+    }
     SegmentEnd = .;
     SegmentSize = SegmentEnd - SegmentStart;
     RomLocation += SegmentSize;
@@ -7345,9 +7573,13 @@ SECTIONS
         build/asm/overlays/ovl_En_Zog_data.o(.data)
         build/src/overlays/actors/ovl_En_Zog/z_en_zog.o(.rodata)
         build/asm/overlays/ovl_En_Zog_rodata.o(.rodata)
-        ovl_En_Zog_bss_start = .;
     }
-    . += 0x10;
+    ovl_En_Zog.bss ALIGN(0x10):
+    {
+        ovl_En_Zog_bss_start = .;
+        . += 0x10;
+        ovl_En_Zog_bss_end = .;
+    }
     SegmentEnd = .;
     SegmentSize = SegmentEnd - SegmentStart;
     RomLocation += SegmentSize;
@@ -7487,9 +7719,13 @@ SECTIONS
         build/asm/overlays/ovl_Obj_Hunsui_data.o(.data)
         build/src/overlays/actors/ovl_Obj_Hunsui/z_obj_hunsui.o(.rodata)
         build/asm/overlays/ovl_Obj_Hunsui_rodata.o(.rodata)
-        ovl_Obj_Hunsui_bss_start = .;
     }
-    . += 0x10;
+    ovl_Obj_Hunsui.bss ALIGN(0x10):
+    {
+        ovl_Obj_Hunsui_bss_start = .;
+        . += 0x10;
+        ovl_Obj_Hunsui_bss_end = .;
+    }
     SegmentEnd = .;
     SegmentSize = SegmentEnd - SegmentStart;
     RomLocation += SegmentSize;
@@ -7559,9 +7795,13 @@ SECTIONS
         build/asm/overlays/ovl_Obj_Nozoki_data.o(.data)
         build/src/overlays/actors/ovl_Obj_Nozoki/z_obj_nozoki.o(.rodata)
         build/asm/overlays/ovl_Obj_Nozoki_rodata.o(.rodata)
-        ovl_Obj_Nozoki_bss_start = .;
     }
-    . += 0x10;
+    ovl_Obj_Nozoki.bss ALIGN(0x10):
+    {
+        ovl_Obj_Nozoki_bss_start = .;
+        . += 0x10;
+        ovl_Obj_Nozoki_bss_end = .;
+    }
     SegmentEnd = .;
     SegmentSize = SegmentEnd - SegmentStart;
     RomLocation += SegmentSize;
@@ -7715,9 +7955,13 @@ SECTIONS
         build/asm/overlays/ovl_En_Tanron2_data.o(.data)
         build/src/overlays/actors/ovl_En_Tanron2/z_en_tanron2.o(.rodata)
         build/asm/overlays/ovl_En_Tanron2_rodata.o(.rodata)
-        ovl_En_Tanron2_bss_start = .;
     }
-    . += 0x150;
+    ovl_En_Tanron2.bss ALIGN(0x10):
+    {
+        ovl_En_Tanron2_bss_start = .;
+        . += 0x150;
+        ovl_En_Tanron2_bss_end = .;
+    }
     SegmentEnd = .;
     SegmentSize = SegmentEnd - SegmentStart;
     RomLocation += SegmentSize;
@@ -7745,9 +7989,13 @@ SECTIONS
         build/asm/overlays/ovl_Obj_Chan_data.o(.data)
         build/src/overlays/actors/ovl_Obj_Chan/z_obj_chan.o(.rodata)
         build/asm/overlays/ovl_Obj_Chan_rodata.o(.rodata)
-        ovl_Obj_Chan_bss_start = .;
     }
-    . += 0x10;
+    ovl_Obj_Chan.bss ALIGN(0x10):
+    {
+        ovl_Obj_Chan_bss_start = .;
+        . += 0x10;
+        ovl_Obj_Chan_bss_end = .;
+    }
     SegmentEnd = .;
     SegmentSize = SegmentEnd - SegmentStart;
     RomLocation += SegmentSize;
@@ -7831,9 +8079,13 @@ SECTIONS
         build/asm/overlays/ovl_Bg_F40_Switch_data.o(.data)
         build/src/overlays/actors/ovl_Bg_F40_Switch/z_bg_f40_switch.o(.rodata)
         build/asm/overlays/ovl_Bg_F40_Switch_rodata.o(.rodata)
-        ovl_Bg_F40_Switch_bss_start = .;
     }
-    . += 0x10;
+    ovl_Bg_F40_Switch.bss ALIGN(0x10):
+    {
+        ovl_Bg_F40_Switch_bss_start = .;
+        . += 0x10;
+        ovl_Bg_F40_Switch_bss_end = .;
+    }
     SegmentEnd = .;
     SegmentSize = SegmentEnd - SegmentStart;
     RomLocation += SegmentSize;
@@ -7875,9 +8127,13 @@ SECTIONS
         build/asm/overlays/ovl_Oceff_Wipe5_data.o(.data)
         build/src/overlays/actors/ovl_Oceff_Wipe5/z_oceff_wipe5.o(.rodata)
         build/asm/overlays/ovl_Oceff_Wipe5_rodata.o(.rodata)
-        ovl_Oceff_Wipe5_bss_start = .;
     }
-    . += 0x10;
+    ovl_Oceff_Wipe5.bss ALIGN(0x10):
+    {
+        ovl_Oceff_Wipe5_bss_start = .;
+        . += 0x10;
+        ovl_Oceff_Wipe5_bss_end = .;
+    }
     SegmentEnd = .;
     SegmentSize = SegmentEnd - SegmentStart;
     RomLocation += SegmentSize;
@@ -7947,9 +8203,13 @@ SECTIONS
         build/asm/overlays/ovl_Oceff_Wipe7_data.o(.data)
         build/src/overlays/actors/ovl_Oceff_Wipe7/z_oceff_wipe7.o(.rodata)
         build/asm/overlays/ovl_Oceff_Wipe7_rodata.o(.rodata)
-        ovl_Oceff_Wipe7_bss_start = .;
     }
-    . += 0x10;
+    ovl_Oceff_Wipe7.bss ALIGN(0x10):
+    {
+        ovl_Oceff_Wipe7_bss_start = .;
+        . += 0x10;
+        ovl_Oceff_Wipe7_bss_end = .;
+    }
     SegmentEnd = .;
     SegmentSize = SegmentEnd - SegmentStart;
     RomLocation += SegmentSize;
@@ -7963,9 +8223,13 @@ SECTIONS
         build/asm/overlays/ovl_Eff_Kamejima_Wave_data.o(.data)
         build/src/overlays/actors/ovl_Eff_Kamejima_Wave/z_eff_kamejima_wave.o(.rodata)
         build/asm/overlays/ovl_Eff_Kamejima_Wave_rodata.o(.rodata)
-        ovl_Eff_Kamejima_Wave_bss_start = .;
     }
-    . += 0x10;
+    ovl_Eff_Kamejima_Wave.bss ALIGN(0x10):
+    {
+        ovl_Eff_Kamejima_Wave_bss_start = .;
+        . += 0x10;
+        ovl_Eff_Kamejima_Wave_bss_end = .;
+    }
     SegmentEnd = .;
     SegmentSize = SegmentEnd - SegmentStart;
     RomLocation += SegmentSize;
@@ -8472,9 +8736,13 @@ SECTIONS
         build/asm/overlays/ovl_Bg_Ikana_Dharma_data.o(.data)
         build/src/overlays/actors/ovl_Bg_Ikana_Dharma/z_bg_ikana_dharma.o(.rodata)
         build/asm/overlays/ovl_Bg_Ikana_Dharma_rodata.o(.rodata)
-        ovl_Bg_Ikana_Dharma_bss_start = .;
     }
-    . += 0x10;
+    ovl_Bg_Ikana_Dharma.bss ALIGN(0x10):
+    {
+        ovl_Bg_Ikana_Dharma_bss_start = .;
+        . += 0x10;
+        ovl_Bg_Ikana_Dharma_bss_end = .;
+    }
     SegmentEnd = .;
     SegmentSize = SegmentEnd - SegmentStart;
     RomLocation += SegmentSize;
@@ -8530,9 +8798,13 @@ SECTIONS
         build/asm/overlays/ovl_En_Rg_data.o(.data)
         build/src/overlays/actors/ovl_En_Rg/z_en_rg.o(.rodata)
         build/asm/overlays/ovl_En_Rg_rodata.o(.rodata)
-        ovl_En_Rg_bss_start = .;
     }
-    . += 0x10;
+    ovl_En_Rg.bss ALIGN(0x10):
+    {
+        ovl_En_Rg_bss_start = .;
+        . += 0x10;
+        ovl_En_Rg_bss_end = .;
+    }
     SegmentEnd = .;
     SegmentSize = SegmentEnd - SegmentStart;
     RomLocation += SegmentSize;
@@ -8897,9 +9169,13 @@ SECTIONS
         build/asm/overlays/ovl_En_Thiefbird_data.o(.data)
         build/src/overlays/actors/ovl_En_Thiefbird/z_en_thiefbird.o(.rodata)
         build/asm/overlays/ovl_En_Thiefbird_rodata.o(.rodata)
-        ovl_En_Thiefbird_bss_start = .;
     }
-    . += 0x10;
+    ovl_En_Thiefbird.bss ALIGN(0x10):
+    {
+        ovl_En_Thiefbird_bss_start = .;
+        . += 0x10;
+        ovl_En_Thiefbird_bss_end = .;
+    }
     SegmentEnd = .;
     SegmentSize = SegmentEnd - SegmentStart;
     RomLocation += SegmentSize;
@@ -8939,9 +9215,13 @@ SECTIONS
     {
         build/src/overlays/actors/ovl_Obj_Yado/z_obj_yado.o(.text)
         build/asm/overlays/ovl_Obj_Yado_data.o(.data)
-        ovl_Obj_Yado_bss_start = .;
     }
-    . += 0x10;
+    ovl_Obj_Yado.bss ALIGN(0x10):
+    {
+        ovl_Obj_Yado_bss_start = .;
+        . += 0x10;
+        ovl_Obj_Yado_bss_end = .;
+    }
     SegmentEnd = .;
     SegmentSize = SegmentEnd - SegmentStart;
     RomLocation += SegmentSize;
@@ -9025,9 +9305,13 @@ SECTIONS
         build/asm/overlays/ovl_En_Invadepoh_Demo_data.o(.data)
         build/src/overlays/actors/ovl_En_Invadepoh_Demo/z_en_invadepoh_demo.o(.rodata)
         build/asm/overlays/ovl_En_Invadepoh_Demo_rodata.o(.rodata)
-        ovl_En_Invadepoh_Demo_bss_start = .;
     }
-    . += 0x80;
+    ovl_En_Invadepoh_Demo.bss ALIGN(0x10):
+    {
+        ovl_En_Invadepoh_Demo_bss_start = .;
+        . += 0x80;
+        ovl_En_Invadepoh_Demo_bss_end = .;
+    }
     SegmentEnd = .;
     SegmentSize = SegmentEnd - SegmentStart;
     RomLocation += SegmentSize;
